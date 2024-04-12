@@ -1,15 +1,15 @@
 extends Object
 
-static func read_double(path : String):
+static func read(path : String):
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		return null
-	return file.get_double()
+	return file.get_as_text()
 
-static func write_double(path : String, data : float) -> void:
+static func write(path : String, data : String) -> void:
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var file = FileAccess.open(path, FileAccess.WRITE)
-	file.store_double(data)
+	file.store_string(data)
 
 static func delete(path : String) -> void:
 	DirAccess.open(".").remove(path)

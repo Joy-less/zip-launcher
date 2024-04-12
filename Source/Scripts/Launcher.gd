@@ -57,7 +57,7 @@ func _ready():
 	# Get latest version number
 	display(tr("REQUESTING_VERSION"))
 	await download(version_url, version_temp_path)
-	var latest_version = File.read_double(version_temp_path)
+	var latest_version = File.read(version_temp_path)
 	File.delete(version_temp_path)
 	display()
 	
@@ -67,9 +67,9 @@ func _ready():
 		return
 	
 	# Get current version number
-	var current_version = File.read_double(version_path)
+	var current_version = File.read(version_path)
 	# Download latest version if outdated
-	if current_version == null || current_version < latest_version:
+	if current_version != latest_version:
 		# Show progress bar
 		progress_bar.value = 0
 		progress_bar.show()
@@ -78,7 +78,7 @@ func _ready():
 		# Extract latest file
 		File.extract(game_temp_path, game_directory)
 		# Store latest version in downloaded directory
-		File.write_double(version_path, latest_version)
+		File.write(version_path, latest_version)
 		# Delete temporary file
 		File.delete(game_temp_path)
 		# Hide progress bar
