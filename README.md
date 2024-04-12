@@ -4,7 +4,7 @@
 
 A customisable game launcher and auto updater made in Godot.
 
-It checks if the current version of the game is the latest, downloads the latest version, and runs your game.
+It downloads the latest game version if necessary and runs your game.
 
 ## Example
 
@@ -12,13 +12,13 @@ It checks if the current version of the game is the latest, downloads the latest
 
 ## Notes
 
-- The links must be direct download links, not supported by Google Drive or OneDrive. GitHub is recommended.
+- The links must be direct downloads, which aren't supported by Google Drive or OneDrive.
 - The launcher downloads the entire game zip, even if the update is small.
-- The first argument of the launched game is the path of the launcher, useful for reopening the launcher.
+- The launcher passes the launcher path as an argument to help you rerun the launcher.
 
 ## Setup
 
-1. Upload your zipped game builds to a file host such as GitHub.
+1. Upload your zipped game builds to a file host such as GitHub Releases.
 
 2. Download and open the zip::launcher project in Godot.
 
@@ -28,7 +28,7 @@ It checks if the current version of the game is the latest, downloads the latest
 
 4. Set the Version URL to a link to a text file containing a version. You should increment this version every time you update any of your game releases.
 
-5. Set the platform URLs to links containing your latest zipped game builds.
+5. Set the platform URLs to links to your latest zipped game builds.
 
 6. Set the platform EXEs to the paths of your executables to launch.
 
