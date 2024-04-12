@@ -1,0 +1,156 @@
+[gd_resource type="Theme" load_steps=32 format=3 uid="uid://dylbpkg8vgpub"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggp8g"]
+draw_center = false
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y0w1b"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w05i0"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjery"]
+bg_color = Color(0.294118, 0.294118, 0.294118, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o7asb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m7b3l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_boke1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3u25m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1t78w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3swuj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eohkl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8l7t3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_66e44"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vdbnv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ga8e8"]
+bg_color = Color(0.556863, 0.556863, 0.556863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ieqg8"]
+bg_color = Color(0.588235, 0.588235, 0.588235, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1koc"]
+bg_color = Color(0.54902, 0.54902, 0.54902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ri6bt"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vllt"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4saat"]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toirj"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyfp3"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc42t"]
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utw62"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pa02"]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7b617"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4i6n7"]
+bg_color = Color(0.556863, 0.556863, 0.556863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_seqb1"]
+bg_color = Color(0.588235, 0.588235, 0.588235, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ngl8"]
+bg_color = Color(0.54902, 0.54902, 0.54902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sn13e"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ttq46"]
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[resource]
+Button/font_sizes/font_size = 20
+Button/styles/focus = SubResource("StyleBoxFlat_ggp8g")
+Button/styles/hover = SubResource("StyleBoxFlat_y0w1b")
+Button/styles/normal = SubResource("StyleBoxFlat_w05i0")
+Button/styles/pressed = SubResource("StyleBoxFlat_hjery")
+CheckBox/font_sizes/font_size = 20
+CheckBox/styles/disabled = SubResource("StyleBoxEmpty_o7asb")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_m7b3l")
+CheckBox/styles/hover = SubResource("StyleBoxEmpty_boke1")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_3u25m")
+CheckBox/styles/normal = SubResource("StyleBoxEmpty_1t78w")
+CheckBox/styles/pressed = SubResource("StyleBoxEmpty_3swuj")
+CheckButton/font_sizes/font_size = 20
+CheckButton/styles/hover = SubResource("StyleBoxEmpty_eohkl")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_8l7t3")
+CheckButton/styles/normal = SubResource("StyleBoxEmpty_66e44")
+CheckButton/styles/pressed = SubResource("StyleBoxEmpty_vdbnv")
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_ga8e8")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_ieqg8")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_p1koc")
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_ri6bt")
+Label/styles/normal = SubResource("StyleBoxFlat_3vllt")
+LineEdit/font_sizes/font_size = 20
+LineEdit/styles/focus = SubResource("StyleBoxFlat_4saat")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_toirj")
+OptionButton/font_sizes/font_size = 20
+Panel/styles/panel = SubResource("StyleBoxFlat_vyfp3")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_rc42t")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_utw62")
+TextEdit/font_sizes/font_size = 20
+TextEdit/styles/focus = SubResource("StyleBoxFlat_2pa02")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_7b617")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_4i6n7")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_seqb1")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_3ngl8")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_sn13e")
+VSlider/styles/slider = SubResource("StyleBoxFlat_ttq46")

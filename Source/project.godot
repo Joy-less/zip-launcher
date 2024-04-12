@@ -1,0 +1,36 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Zip-launcher"
+run/main_scene="res://Scenes/Main.tscn"
+config/features=PackedStringArray("4.2", "Mobile")
+boot_splash/show_image=false
+config/icon="res://Images/Icon.png"
+
+[display]
+
+window/size/viewport_width=960
+window/size/viewport_height=540
+window/stretch/mode="canvas_items"
+
+[gui]
+
+theme/custom="res://Misc/Theme.tres"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation")
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

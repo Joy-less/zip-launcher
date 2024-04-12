@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=3 uid="uid://drpcunkyh6m0k"]
+
+[ext_resource type="Script" path="res://Scripts/Launcher.gd" id="1_rum8j"]
+[ext_resource type="Theme" uid="uid://dylbpkg8vgpub" path="res://Misc/Theme.tres" id="2_vmoyk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfqnu"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Root" type="Node"]
+
+[node name="Launcher" type="Node" parent="." node_paths=PackedStringArray("thumbnail_rect", "log_label", "progress_bar", "choice_box", "message_label", "retry_button", "quit_button")]
+script = ExtResource("1_rum8j")
+theme = ExtResource("2_vmoyk")
+thumbnail_rect = NodePath("../Background/Thumbnail")
+log_label = NodePath("../Background/Log")
+progress_bar = NodePath("../Background/ProgressBar")
+choice_box = NodePath("../Background/ChoiceBox")
+message_label = NodePath("../Background/ChoiceBox/ScrollMessage/Message")
+retry_button = NodePath("../Background/ChoiceBox/ScrollChoices/Choices/RetryButton")
+quit_button = NodePath("../Background/ChoiceBox/ScrollChoices/Choices/QuitButton")
+
+[node name="Background" type="Panel" parent="."]
+offset_right = 960.0
+offset_bottom = 540.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_sfqnu")
+
+[node name="Thumbnail" type="TextureRect" parent="Background"]
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 540.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Log" type="RichTextLabel" parent="Background"]
+layout_mode = 0
+offset_top = 480.0
+offset_right = 960.0
+offset_bottom = 540.0
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "[center]"
+
+[node name="ProgressBar" type="ProgressBar" parent="Background"]
+visible = false
+layout_mode = 0
+offset_left = 280.0
+offset_top = 480.0
+offset_right = 680.0
+offset_bottom = 510.0
+max_value = 1.0
+
+[node name="ChoiceBox" type="Panel" parent="Background"]
+visible = false
+layout_mode = 0
+offset_left = 320.0
+offset_top = 180.0
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_force_pass_scroll_events = false
+
+[node name="ScrollMessage" type="ScrollContainer" parent="Background/ChoiceBox"]
+layout_mode = 0
+offset_left = 2.5
+offset_top = 2.5
+offset_right = 317.5
+offset_bottom = 142.5
+
+[node name="Message" type="RichTextLabel" parent="Background/ChoiceBox/ScrollMessage"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+
+[node name="ScrollChoices" type="ScrollContainer" parent="Background/ChoiceBox"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 142.0
+offset_right = 310.0
+offset_bottom = 180.0
+
+[node name="Choices" type="HBoxContainer" parent="Background/ChoiceBox/ScrollChoices"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="Background/ChoiceBox/ScrollChoices/Choices"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+text = "Retry"
+
+[node name="QuitButton" type="Button" parent="Background/ChoiceBox/ScrollChoices/Choices"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+text = "Quit"
