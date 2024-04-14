@@ -86,7 +86,10 @@ func _ready():
 	
 	# Run game executable
 	var launcher_path := OS.get_executable_path()
-	var launch_success := OS.create_process(game_directory.path_join(get_exe_path()), [launcher_path])
+	var launch_success := OS.create_process(
+		game_directory.path_join(get_exe_path()),
+		["--launcher_path=" + launcher_path]
+	)
 	
 	# Ensure game executable ran successfully
 	if launch_success != OK:

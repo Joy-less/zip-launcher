@@ -14,7 +14,7 @@ It downloads the latest game version if necessary and runs your game.
 
 - The links must be direct downloads, which aren't supported by Google Drive or OneDrive.
 - The launcher downloads the entire game zip, even if the update is small.
-- The launcher passes the launcher path as an argument to help you rerun the launcher.
+- The launcher passes "--launcher_path={path}" as an argument for rerunning the launcher.
 
 ## Setup
 
