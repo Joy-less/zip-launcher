@@ -34,7 +34,7 @@ theme/custom="res://Misc/Theme.tres"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Translations/Translations.en.translation", "res://Translations/Translations.jp.translation")
+locale/translations=PackedStringArray("res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation")
 
 [rendering]
 

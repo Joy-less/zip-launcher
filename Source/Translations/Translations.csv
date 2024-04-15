@@ -1,4 +1,4 @@
-keys,en,jp
+keys,en,ja
 REQUESTING_VERSION,"Requesting version...","バージョンをリクエスト中..."
 FAILED_GET_VERSION,"Failed to get the latest version.","最新バージョンの取得に失敗しました。"
 FAILED_LAUNCH,"Failed to launch the game.","ゲームの起動に失敗しました。"
