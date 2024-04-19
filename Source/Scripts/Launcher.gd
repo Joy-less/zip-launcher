@@ -163,7 +163,7 @@ func get_download_url() -> String:
 	match OS.get_name().to_lower():
 		"windows": return windows_url
 		"macos": return macos_url
-		"linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD": return linux_url
+		"linux", "freebsd", "netbsd", "openbsd", "bsd": return linux_url
 		"android": return android_url
 		_: return ""
 
@@ -171,6 +171,6 @@ func get_exe_path() -> String:
 	match OS.get_name().to_lower():
 		"windows": return windows_exe
 		"macos": return macos_exe
-		"linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD": return linux_exe
+		"linux", "freebsd", "netbsd", "openbsd", "bsd": return linux_exe
 		"android": return android_exe
 		_: return ""
