@@ -55,7 +55,7 @@ func _enter_tree():
 
 func _ready():
 	# Get latest version number
-	display(tr("REQUESTING_VERSION"))
+	display(tr("FETCHING_VERSION"))
 	await download(version_url, version_temp_path)
 	var latest_version = File.read(version_temp_path)
 	File.delete(version_temp_path)
@@ -63,7 +63,7 @@ func _ready():
 	
 	# Ensure latest version number received
 	if latest_version == null:
-		await show_choice_box(tr("FAILED_GET_VERSION"))
+		await show_choice_box(tr("FAIL_FETCH_VERSION"))
 		return
 	
 	# Get current version number
@@ -93,7 +93,7 @@ func _ready():
 	
 	# Ensure game executable ran successfully
 	if launch_success != OK:
-		await show_choice_box(tr("FAILED_LAUNCH"))
+		await show_choice_box(tr("FAIL_LAUNCH"))
 		return
 	
 	# Close launcher
