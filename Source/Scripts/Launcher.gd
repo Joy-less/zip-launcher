@@ -63,7 +63,7 @@ func _ready():
 	
 	# Ensure latest version number received
 	if latest_version == null:
-		await show_choice_box(tr("FAIL_FETCH_VERSION"))
+		await show_choice_box(tr("FAILED_FETCH_VERSION"))
 		return
 	
 	# Get current version number
@@ -74,7 +74,11 @@ func _ready():
 		progress_bar.value = 0
 		progress_bar.show()
 		# Download latest file
-		await download(windows_url, game_temp_path)
+		var download_success = await download(windows_url, game_temp_path)
+		# Ensure latest file downloaded
+		if download_success != OK:
+			await show_choice_box(tr("FAILED_DOWNLOAD"))
+			return
 		# Extract latest file
 		File.extract(game_temp_path, game_directory)
 		# Store latest version in downloaded directory
@@ -93,7 +97,7 @@ func _ready():
 	
 	# Ensure game executable ran successfully
 	if launch_success != OK:
-		await show_choice_box(tr("FAIL_LAUNCH"))
+		await show_choice_box(tr("FAILED_LAUNCH"))
 		return
 	
 	# Close launcher
@@ -122,11 +126,11 @@ func download(link : String, path : String) -> Error:
 		return success
 	
 	# Wait for download completion
-	await http.request_completed
+	var result : int = (await http.request_completed)[0]
 	# Destroy HTTP request
 	http.queue_free()
 	# Return success
-	return OK
+	return OK if result == 0 else FAILED
 
 func display(text = null) -> void:
 	if text != null:
