@@ -11,7 +11,6 @@ config_version=5
 [application]
 
 config/name="zip::launcher"
-config/version="1.0.0"
 run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 boot_splash/show_image=false
