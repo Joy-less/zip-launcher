@@ -1,6 +1,6 @@
 extends Node
 
-## The URL of a file containing the latest version number.
+## The URL of the version string.
 @export var version_url : String
 ## The launcher font.
 @export var font : Font
@@ -90,10 +90,11 @@ func _ready():
 	
 	# Run game executable
 	var launcher_path := OS.get_executable_path()
-	var launch_success := OS.create_process(
-		game_directory.path_join(get_exe_path()),
-		["--launcher_path=" + launcher_path]
-	)
+	var launch_success := OS.create_process(game_directory.path_join(get_exe_path()), [
+		"--launcher_path=" + launcher_path,
+		"--version_url=" + version_url,
+		"--current_version=" + current_version,
+	])
 	
 	# Ensure game executable ran successfully
 	if launch_success != OK:

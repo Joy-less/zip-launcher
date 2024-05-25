@@ -12,9 +12,12 @@ It downloads the latest game version if necessary and runs your game.
 
 ## Notes
 
-- The links must be direct downloads, which aren't supported by Google Drive or OneDrive.
+- The links must be direct downloads (not supported by Google Drive or OneDrive).
 - The launcher downloads the entire game zip, even if the update is small.
-- The launcher passes "--launcher_path={path}" as an argument for rerunning the launcher.
+- The launcher passes command line arguments to your game:
+  - `--launcher_path={path}` - path of launcher executable
+  - `--version_url={url}` - URL of version string
+  - `--current_version={version}` - current game version
 
 ## Setup
 
