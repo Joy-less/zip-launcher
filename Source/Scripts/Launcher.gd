@@ -92,8 +92,8 @@ func _ready():
 	var launcher_path := OS.get_executable_path()
 	var launch_success := OS.create_process(game_directory.path_join(get_exe_path()), [
 		"--launcher_path=" + launcher_path,
-		"--version_url=" + version_url,
-		"--current_version=" + current_version,
+		"--launcher_game_version_url=" + version_url,
+		"--launcher_game_version=" + current_version,
 	])
 	
 	# Ensure game executable ran successfully
