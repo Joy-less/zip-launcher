@@ -1,46 +1,46 @@
 extends Node
 
 ## The URL of the version string.
-@export var version_url : String
+@export var version_url:String
 ## The launcher font.
-@export var font : Font
+@export var font:Font
 ## The launcher window icon.
-@export var icon : Image
+@export var icon:Image
 ## The launcher background image.
-@export var thumbnail : Texture2D
+@export var thumbnail:Texture2D
 @export_category("Windows")
 ## The URL of the Windows game zip.
-@export var windows_url : String
+@export var windows_url:String
 ## The path to the executable in the Windows game zip.
-@export var windows_exe : String = "Game.exe"
+@export var windows_exe:String = "Game.exe"
 @export_category("macOS")
 ## The URL of the macOS game zip.
-@export var macos_url : String
+@export var macos_url:String
 ## The path to the executable in the macOS game zip.
-@export var macos_exe : String = "Game.app"
+@export var macos_exe:String = "Game.app"
 @export_category("Linux")
 ## The URL of the Linux game zip.
-@export var linux_url : String
+@export var linux_url:String
 ## The path to the executable in the Linux game zip.
-@export var linux_exe : String = "Game.x86_64"
+@export var linux_exe:String = "Game.x86_64"
 @export_category("Android")
 ## The URL of the Android game zip.
-@export var android_url : String
+@export var android_url:String
 ## The path to the executable in the Android game zip.
-@export var android_exe : String = "Game.apk"
+@export var android_exe:String = "Game.apk"
 @export_category("Nodes")
-@export var theme : Theme
-@export var thumbnail_rect : TextureRect
-@export var log_label : RichTextLabel
-@export var progress_bar : ProgressBar
-@export var choice_box : Panel
-@export var message_label : RichTextLabel
-@export var retry_button : Button
-@export var quit_button : Button
+@export var theme:Theme
+@export var thumbnail_rect:TextureRect
+@export var log_label:RichTextLabel
+@export var progress_bar:ProgressBar
+@export var choice_box:Panel
+@export var message_label:RichTextLabel
+@export var retry_button:Button
+@export var quit_button:Button
 
 var File := preload("res://Scripts/File.gd")
-var http : HTTPRequest
-var choice : int
+var http:HTTPRequest
+var choice:int
 
 const game_temp_path := "Game.tmp"
 const version_temp_path := "Version.tmp"
@@ -113,7 +113,7 @@ func _process(_delta):
 		if total_bytes >= 0:
 			progress_bar.value = lerp(progress_bar.value, float(current_bytes) / total_bytes, 0.1)
 
-func download(link : String, path : String) -> Error:
+func download(link:String, path:String) -> Error:
 	# Create HTTP request
 	http = HTTPRequest.new()
 	http.download_file = path
@@ -127,7 +127,7 @@ func download(link : String, path : String) -> Error:
 		return success
 	
 	# Wait for download completion
-	var result : int = (await http.request_completed)[0]
+	var result:int = (await http.request_completed)[0]
 	# Destroy HTTP request
 	http.queue_free()
 	# Return success
@@ -141,8 +141,8 @@ func display(text = null) -> void:
 		log_label.hide()
 		log_label.text = ""
 
-func show_choice_box(text : String) -> void:
-	message_label.text = "[center]\n" + text
+func show_choice_box(text:String) -> void:
+	message_label.text = "[center]" + text
 	choice_box.show()
 	
 	choice = -1
