@@ -57,7 +57,7 @@ func _ready():
 	# Get latest version number
 	display(tr("FETCHING_VERSION"))
 	await download(version_url, version_temp_path)
-	var latest_version = File.read(version_temp_path)
+	var latest_version:String = File.read(version_temp_path)
 	File.delete(version_temp_path)
 	display()
 	
@@ -67,14 +67,14 @@ func _ready():
 		return
 	
 	# Get current version number
-	var current_version = File.read(version_path)
+	var current_version:String = File.read(version_path)
 	# Download latest version if outdated
 	if current_version != latest_version:
 		# Show progress bar
 		progress_bar.value = 0
 		progress_bar.show()
 		# Download latest file
-		var download_success = await download(windows_url, game_temp_path)
+		var download_success:int = await download(windows_url, game_temp_path)
 		# Ensure latest file downloaded
 		if download_success != OK:
 			await show_choice_box(tr("FAILED_DOWNLOAD"))
@@ -87,10 +87,12 @@ func _ready():
 		File.delete(game_temp_path)
 		# Hide progress bar
 		progress_bar.hide()
+		# 
+		latest_version = current_version
 	
 	# Run game executable
-	var launcher_path := OS.get_executable_path()
-	var launch_success := OS.create_process(game_directory.path_join(get_exe_path()), [
+	var launcher_path:String = OS.get_executable_path()
+	var launch_success:int = OS.create_process(game_directory.path_join(get_exe_path()), [
 		"--launcher_path=" + launcher_path,
 		"--launcher_game_version_url=" + version_url,
 		"--launcher_game_version=" + current_version,
@@ -107,8 +109,8 @@ func _ready():
 func _process(_delta):
 	if is_instance_valid(http):
 		# Get download progress
-		var current_bytes := http.get_downloaded_bytes()
-		var total_bytes := http.get_body_size()
+		var current_bytes:int = http.get_downloaded_bytes()
+		var total_bytes:int = http.get_body_size()
 		# Display download progress
 		if total_bytes >= 0:
 			progress_bar.value = lerp(progress_bar.value, float(current_bytes) / total_bytes, 0.1)
@@ -121,7 +123,7 @@ func download(link:String, path:String) -> Error:
 	add_child(http)
 	
 	# Request file
-	var success = http.request(link)
+	var success:int = http.request(link)
 	# Ensure request was successful
 	if success != OK:
 		return success

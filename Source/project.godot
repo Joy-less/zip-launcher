@@ -22,6 +22,10 @@ window/size/viewport_width=960
 window/size/viewport_height=540
 window/stretch/mode="canvas_items"
 
+[dotnet]
+
+project/assembly_name="zip--launcher"
+
 [filesystem]
 
 import/blender/enabled=false
