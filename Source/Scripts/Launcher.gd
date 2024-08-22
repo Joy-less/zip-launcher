@@ -53,54 +53,57 @@ func _enter_tree():
 	if icon != null: DisplayServer.set_icon(icon)
 	if thumbnail != null: thumbnail_rect.texture = thumbnail
 
+func _exit_tree():
+	# Delete temporary files
+	File.delete(version_temp_path)
+	File.delete(game_temp_path)
+
 func _ready():
 	# Get latest version number
 	display(tr("FETCHING_VERSION"))
 	await download(version_url, version_temp_path)
-	var latest_version:String = File.read(version_temp_path)
+	var latest_version:String = File.read(version_temp_path).strip_edges()
 	File.delete(version_temp_path)
 	display()
 	
 	# Ensure latest version number received
 	if latest_version == null:
-		await show_choice_box(tr("FAILED_FETCH_VERSION"))
+		await display_error(tr("FAILED_FETCH_VERSION"))
 		return
 	
 	# Get current version number
-	var current_version:String = File.read(version_path)
+	var current_version = File.read(version_path)
 	# Download latest version if outdated
 	if current_version != latest_version:
 		# Show progress bar
 		progress_bar.value = 0
 		progress_bar.show()
 		# Download latest file
-		var download_success:int = await download(windows_url, game_temp_path)
+		var download_success:int = await download(download_url(), game_temp_path)
 		# Ensure latest file downloaded
 		if download_success != OK:
-			await show_choice_box(tr("FAILED_DOWNLOAD"))
+			await display_error(tr("FAILED_DOWNLOAD"))
 			return
 		# Extract latest file
 		File.extract(game_temp_path, game_directory)
-		# Store latest version in downloaded directory
-		File.write(version_path, latest_version)
 		# Delete temporary file
 		File.delete(game_temp_path)
+		# Store latest version in downloaded directory
+		File.write(version_path, latest_version)
 		# Hide progress bar
 		progress_bar.hide()
-		# 
-		latest_version = current_version
 	
 	# Run game executable
-	var launcher_path:String = OS.get_executable_path()
-	var launch_success:int = OS.create_process(game_directory.path_join(get_exe_path()), [
-		"--launcher_path=" + launcher_path,
+	var launch_success:int = OS.create_process(game_directory.path_join(exe_path()), [
+		"--",
+		"--launcher_path=" + OS.get_executable_path(),
 		"--launcher_game_version_url=" + version_url,
-		"--launcher_game_version=" + current_version,
+		"--launcher_game_version=" + latest_version,
 	])
 	
 	# Ensure game executable ran successfully
-	if launch_success != OK:
-		await show_choice_box(tr("FAILED_LAUNCH"))
+	if launch_success == -1:
+		await display_error(tr("FAILED_LAUNCH"))
 		return
 	
 	# Close launcher
@@ -143,7 +146,7 @@ func display(text = null) -> void:
 		log_label.hide()
 		log_label.text = ""
 
-func show_choice_box(text:String) -> void:
+func display_error(text:String) -> void:
 	message_label.text = "[center]" + text
 	choice_box.show()
 	
@@ -166,7 +169,7 @@ func show_choice_box(text:String) -> void:
 		0: get_tree().reload_current_scene()
 		1: get_tree().quit()
 
-func get_download_url() -> String:
+func download_url() -> String:
 	match OS.get_name().to_lower():
 		"windows": return windows_url
 		"macos": return macos_url
@@ -174,7 +177,7 @@ func get_download_url() -> String:
 		"android": return android_url
 		_: return ""
 
-func get_exe_path() -> String:
+func exe_path() -> String:
 	match OS.get_name().to_lower():
 		"windows": return windows_exe
 		"macos": return macos_exe
