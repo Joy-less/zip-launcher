@@ -5,7 +5,7 @@ extends Node
 ## The launcher font.
 @export var font:Font
 ## The launcher window icon.
-@export var icon:Image
+@export var icon:Texture2D
 ## The launcher background image.
 @export var thumbnail:Texture2D
 @export_category("Windows")
@@ -31,16 +31,17 @@ extends Node
 @export_category("Nodes")
 @export var theme:Theme
 @export var thumbnail_rect:TextureRect
-@export var log_label:RichTextLabel
+@export var log_label:Label
 @export var progress_bar:ProgressBar
 @export var choice_box:Panel
-@export var message_label:RichTextLabel
+@export var message_label:Label
 @export var retry_button:Button
 @export var quit_button:Button
 
 var File := preload("res://Scripts/File.gd")
 var http:HTTPRequest
 var choice:int
+var download_result:int
 
 const game_temp_path := "Game.tmp"
 const version_temp_path := "Version.tmp"
@@ -50,7 +51,7 @@ const version_path := "Game/Version"
 func _enter_tree():
 	# Set custom font, icon and thumbnail
 	if font != null: theme.default_font = font
-	if icon != null: DisplayServer.set_icon(icon)
+	if icon != null: DisplayServer.set_icon(icon.get_image())
 	if thumbnail != null: thumbnail_rect.texture = thumbnail
 
 func _exit_tree():
@@ -60,38 +61,37 @@ func _exit_tree():
 
 func _ready():
 	# Get latest version number
-	display(tr("FETCHING_VERSION"))
-	await download(version_url, version_temp_path)
+	display("FETCHING_VERSION")
+	await download(version_url, version_temp_path, false)
 	var latest_version:String = File.read(version_temp_path).strip_edges()
 	File.delete(version_temp_path)
 	display()
 	
 	# Ensure latest version number received
 	if latest_version == null:
-		await display_error(tr("FAILED_FETCH_VERSION"))
+		await display_error("FAILED_FETCH_VERSION")
 		return
 	
 	# Get current version number
 	var current_version = File.read(version_path)
 	# Download latest version if outdated
 	if current_version != latest_version:
-		# Show progress bar
-		progress_bar.value = 0
-		progress_bar.show()
 		# Download latest file
-		var download_success:int = await download(download_url(), game_temp_path)
+		var download_success:int = await download(download_url(), game_temp_path, true)
 		# Ensure latest file downloaded
 		if download_success != OK:
-			await display_error(tr("FAILED_DOWNLOAD"))
+			await display_error("FAILED_DOWNLOAD")
 			return
 		# Extract latest file
+		display("EXTRACTING")
+		await get_tree().process_frame
 		File.extract(game_temp_path, game_directory)
+		display()
+		await get_tree().process_frame
 		# Delete temporary file
 		File.delete(game_temp_path)
 		# Store latest version in downloaded directory
 		File.write(version_path, latest_version)
-		# Hide progress bar
-		progress_bar.hide()
 	
 	# Run game executable
 	var launch_success:int = OS.create_process(game_directory.path_join(exe_path()), [
@@ -103,22 +103,13 @@ func _ready():
 	
 	# Ensure game executable ran successfully
 	if launch_success == -1:
-		await display_error(tr("FAILED_LAUNCH"))
+		await display_error("FAILED_LAUNCH")
 		return
 	
 	# Close launcher
 	get_tree().quit()
 
-func _process(_delta):
-	if is_instance_valid(http):
-		# Get download progress
-		var current_bytes:int = http.get_downloaded_bytes()
-		var total_bytes:int = http.get_body_size()
-		# Display download progress
-		if total_bytes >= 0:
-			progress_bar.value = lerp(progress_bar.value, float(current_bytes) / total_bytes, 0.1)
-
-func download(link:String, path:String) -> Error:
+func download(link:String, path:String, show_progress:bool) -> Error:
 	# Create HTTP request
 	http = HTTPRequest.new()
 	http.download_file = path
@@ -126,28 +117,44 @@ func download(link:String, path:String) -> Error:
 	add_child(http)
 	
 	# Request file
-	var success:int = http.request(link)
+	var success:Error = http.request(link)
 	# Ensure request was successful
 	if success != OK:
 		return success
 	
-	# Wait for download completion
-	var result:int = (await http.request_completed)[0]
+	# Set download result when request completed
+	download_result = -1
+	http.request_completed.connect(func(result, _response_code, _headers, _body):
+		download_result = result)
+	
+	# Show progress bar
+	progress_bar.value = 0
+	if show_progress:
+		progress_bar.show()
+	# Update progress bar while downloading
+	while download_result < 0:
+		# Get download progress
+		var current_bytes:int = http.get_downloaded_bytes()
+		var total_bytes:int = http.get_body_size()
+		# Display download progress
+		if total_bytes >= 0:
+			progress_bar.value = lerp(progress_bar.value, float(current_bytes) / total_bytes, 0.1)
+		# Wait for next frame
+		await get_tree().process_frame
+	# Hide progress bar
+	progress_bar.value = 1
+	progress_bar.hide()
+	
 	# Destroy HTTP request
 	http.queue_free()
 	# Return success
-	return OK if result == 0 else FAILED
+	return OK if download_result == OK else FAILED
 
-func display(text = null) -> void:
-	if text != null:
-		log_label.text = "[center]" + str(text)
-		log_label.show()
-	else:
-		log_label.hide()
-		log_label.text = ""
+func display(text:String = "") -> void:
+	log_label.text = text
 
 func display_error(text:String) -> void:
-	message_label.text = "[center]" + text
+	message_label.text = text
 	choice_box.show()
 	
 	choice = -1
