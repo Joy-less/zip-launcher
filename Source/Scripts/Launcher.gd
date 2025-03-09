@@ -74,7 +74,6 @@ func _ready()->void:
 		#end
 		# Download latest file
 		var download_success:Error = await download(download_url, game_temp_path, true)
-		# Ensure latest file downloaded
 		if download_success != OK:
 			await display_error("FAILED_DOWNLOAD")
 			return
@@ -104,8 +103,6 @@ func _ready()->void:
 		str("--launcher_config_url=", config_url),
 		str("--launcher_game_version=", latest_version),
 	])
-	
-	# Ensure game executable ran successfully
 	if launch_success < 0:
 		await display_error("FAILED_LAUNCH")
 		return

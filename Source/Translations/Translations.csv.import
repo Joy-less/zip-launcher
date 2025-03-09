@@ -6,10 +6,10 @@ uid="uid://dbnk3vxy4nqs2"
 
 [deps]
 
-files=["res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation", "res://Translations/Translations.ru.translation", "res://Translations/Translations.fr.translation", "res://Translations/Translations.es.translation", "res://Translations/Translations.de.translation", "res://Translations/Translations.pt.translation", "res://Translations/Translations.it.translation", "res://Translations/Translations.ko.translation"]
+files=["res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation", "res://Translations/Translations.ru.translation", "res://Translations/Translations.fr.translation", "res://Translations/Translations.es.translation", "res://Translations/Translations.de.translation", "res://Translations/Translations.pt.translation", "res://Translations/Translations.it.translation", "res://Translations/Translations.ko.translation", "res://Translations/Translations.zh.translation"]
 
 source_file="res://Translations/Translations.csv"
-dest_files=["res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation", "res://Translations/Translations.ru.translation", "res://Translations/Translations.fr.translation", "res://Translations/Translations.es.translation", "res://Translations/Translations.de.translation", "res://Translations/Translations.pt.translation", "res://Translations/Translations.it.translation", "res://Translations/Translations.ko.translation"]
+dest_files=["res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation", "res://Translations/Translations.ru.translation", "res://Translations/Translations.fr.translation", "res://Translations/Translations.es.translation", "res://Translations/Translations.de.translation", "res://Translations/Translations.pt.translation", "res://Translations/Translations.it.translation", "res://Translations/Translations.ko.translation", "res://Translations/Translations.zh.translation"]
 
 [params]
 

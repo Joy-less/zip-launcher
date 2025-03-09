@@ -41,7 +41,7 @@ theme/custom="res://Misc/Theme.tres"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation", "res://Translations/Translations.de.translation", "res://Translations/Translations.es.translation", "res://Translations/Translations.fr.translation", "res://Translations/Translations.it.translation", "res://Translations/Translations.ko.translation", "res://Translations/Translations.pt.translation", "res://Translations/Translations.ru.translation")
+locale/translations=PackedStringArray("res://Translations/Translations.en.translation", "res://Translations/Translations.ja.translation", "res://Translations/Translations.de.translation", "res://Translations/Translations.es.translation", "res://Translations/Translations.fr.translation", "res://Translations/Translations.it.translation", "res://Translations/Translations.ko.translation", "res://Translations/Translations.pt.translation", "res://Translations/Translations.ru.translation", "res://Translations/Translations.zh.translation")
 
 [rendering]
 
