@@ -39,9 +39,6 @@ extends Node
 @export var quit_button:Button
 
 var File := preload("res://Scripts/File.gd")
-var http:HTTPRequest
-var choice:int
-var download_result:int
 
 const game_temp_path := "Game.tmp"
 const version_temp_path := "Version.tmp"
@@ -117,7 +114,7 @@ func _ready():
 
 func download(link:String, path:String, show_progress:bool) -> Error:
 	# Create HTTP request
-	http = HTTPRequest.new()
+	var http := HTTPRequest.new()
 	http.download_file = path
 	http.use_threads = true
 	add_child(http)
@@ -130,7 +127,7 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 	#end
 	
 	# Set download result when request completed
-	download_result = -1
+	var download_result:int = -1
 	http.request_completed.connect(func(result, _response_code, _headers, _body):
 		download_result = result)
 	
@@ -168,9 +165,9 @@ func display_error(text:String) -> void:
 	message_label.text = text
 	choice_box.show()
 	
-	choice = -1
-	var retry := func(): choice = 0
-	var quit := func(): choice = 1
+	var choice:int = -1
+	var retry := func(): choice = 0 #end
+	var quit := func(): choice = 1 #end
 	retry_button.pressed.connect(retry)
 	quit_button.pressed.connect(quit)
 	
