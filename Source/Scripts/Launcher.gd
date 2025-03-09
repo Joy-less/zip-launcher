@@ -101,9 +101,9 @@ func _ready():
 	# Run game executable
 	var launch_success:int = OS.create_process(game_directory.path_join(exe_path()), [
 		"--",
-		"--launcher_path=" + OS.get_executable_path(),
-		"--launcher_game_version_url=" + version_url,
-		"--launcher_game_version=" + latest_version,
+		str("--launcher_path=", OS.get_executable_path()),
+		str("--launcher_game_version_url=", version_url),
+		str("--launcher_game_version=", latest_version),
 	])
 	
 	# Ensure game executable ran successfully
