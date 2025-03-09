@@ -1,16 +1,16 @@
 extends Object
 
-static func read(path:String):
-	var file = FileAccess.open(path, FileAccess.READ)
+static func read(path:String)->String:
+	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
-		return null
+		return ""
 	#end
 	return file.get_as_text()
 #end
 
 static func write(path:String, data:String)->void:
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
-	var file = FileAccess.open(path, FileAccess.WRITE)
+	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
 #end
 
@@ -29,7 +29,7 @@ static func extract(path:String, directory:String)->void:
 	DirAccess.make_dir_recursive_absolute(directory)
 	
 	# Get each nested zipped file
-	for file_path in zip_reader.get_files():
+	for file_path:String in zip_reader.get_files():
 		# Create target sub directory
 		DirAccess.open(directory).make_dir_recursive(file_path.get_base_dir())
 		# Create target file
