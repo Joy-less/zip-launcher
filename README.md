@@ -1,4 +1,4 @@
-![Banner](https://github.com/Joy-less/zip-launcher/blob/7ed04ac8a72e91d7ff693c9f716e992ff2d0890c/Assets/Banner%204x.png)
+![Banner](https://github.com/Joy-less/zip-launcher/blob/main/Assets/Banner%204x.png?raw=true)
 
 # zip::launcher
 
@@ -8,7 +8,7 @@ It downloads the latest game version if necessary and runs your game.
 
 ## Example
 
-![Launcher Preview](https://github.com/Joy-less/zip-launcher/blob/acb201823d8898e7b4fe786a4770db498610075b/Assets/LauncherPreview.jpg)
+![Launcher Preview](https://github.com/Joy-less/zip-launcher/blob/main/Assets/LauncherPreview.jpg?raw=true)
 
 ## Notes
 
@@ -31,27 +31,22 @@ It downloads the latest game version if necessary and runs your game.
 
 4. Set the Config URL to a link to a JSON file.
 
-The file should be in the format:
-```json
-{
-  // Required
-  "version": "The version number. Update this every time you update any of your game releases.",
+The file should have the keys:
+- `version`: The version number. Update this every time you update any of your game releases.
+- `windows_url`: The URL of the Windows game zip.
+- `windows_exe`: The path to the executable in the Windows game zip.
+- `linux_url`: The URL of the Linux game zip.
+- `linux_exe`: The path to the executable in the Linux game zip.
+- `macos_url`: The URL of the macOS game zip.
+- `macos_exe`: The path to the executable in the macOS game zip.
+- `android_url`: The URL of the Android game zip.
+- `android_exe`: The path to the executable in the Android game zip.
+- `ios_url`: The URL of the iOS game zip.
+- `ios_exe`: The path to the executable in the iOS game zip.
+- `web_url`: The URL of the Web game zip.
+- `web_exe`: The path to the executable in the Web game zip
 
-  // Optional
-  "windows_url": "The URL of the Windows game zip.",
-  "windows_exe": "The path to the executable in the Windows game zip.",
-  "linux_url": "The URL of the Linux game zip.",
-  "linux_exe": "The path to the executable in the Linux game zip.",
-  "macos_url": "The URL of the macOS game zip.",
-  "macos_exe": "The path to the executable in the macOS game zip.",
-  "android_url": "The URL of the Android game zip.",
-  "android_exe": "The path to the executable in the Android game zip.",
-  "ios_url": "The URL of the iOS game zip.",
-  "ios_exe": "The path to the executable in the iOS game zip.",
-  "web_url": "The URL of the Web game zip.",
-  "web_exe": "The path to the executable in the Web game zip."
-}
-```
+Keys for unused platforms may be omitted.
 
 Example config file:
 ```json
