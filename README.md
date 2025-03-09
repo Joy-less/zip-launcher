@@ -16,7 +16,7 @@ It downloads the latest game version if necessary and runs your game.
 - The launcher downloads the entire game zip, even if the update is small.
 - The launcher passes command line arguments to your game:
   - `--launcher_path={path}` - path of launcher executable
-  - `--launcher_game_version_url={url}` - URL of game version
+  - `--launcher_config_url={url}` - URL of config JSON
   - `--launcher_game_version={version}` - launched game version
 
 ## Setup
