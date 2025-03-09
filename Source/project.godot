@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.4", "Mobile")
 boot_splash/show_image=false
 config/icon="res://Images/Icon.png"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
 [display]
 
 window/size/viewport_width=960

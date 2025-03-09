@@ -40,25 +40,28 @@ extends Node
 
 var File := preload("res://Scripts/File.gd")
 
+var choice:int
+var download_result:int
+
 const game_temp_path:String = "Game.tmp"
 const version_temp_path:String = "Version.tmp"
 const game_directory:String = "Game"
 const version_path:String = "Game/Version"
 
-func _enter_tree():
+func _enter_tree()->void:
 	# Set custom font, icon and thumbnail
 	if font != null: theme.default_font = font #end
 	if icon != null: DisplayServer.set_icon(icon.get_image()) #end
 	if thumbnail != null: thumbnail_rect.texture = thumbnail #end
 #end
 
-func _exit_tree():
+func _exit_tree()->void:
 	# Delete temporary files
 	File.delete(version_temp_path)
 	File.delete(game_temp_path)
 #end
 
-func _ready():
+func _ready()->void:
 	# Get latest version number
 	display("FETCHING_VERSION")
 	await download(version_url, version_temp_path, false)
@@ -73,11 +76,11 @@ func _ready():
 	#end
 	
 	# Get current version number
-	var current_version = File.read(version_path)
+	var current_version:String = File.read(version_path)
 	# Download latest version if outdated
 	if current_version != latest_version:
 		# Download latest file
-		var download_success:int = await download(download_url(), game_temp_path, true)
+		var download_success:Error = await download(download_url(), game_temp_path, true)
 		# Ensure latest file downloaded
 		if download_success != OK:
 			await display_error("FAILED_DOWNLOAD")
@@ -112,7 +115,7 @@ func _ready():
 	# Close launcher
 	get_tree().quit()
 
-func download(link:String, path:String, show_progress:bool) -> Error:
+func download(link:String, path:String, show_progress:bool)->Error:
 	# Create HTTP request
 	var http := HTTPRequest.new()
 	http.download_file = path
@@ -127,8 +130,8 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 	#end
 	
 	# Set download result when request completed
-	var download_result:int = -1
-	http.request_completed.connect(func(result, _response_code, _headers, _body):
+	download_result = -1
+	http.request_completed.connect(func(result:int, _response_code:int, _headers:PackedStringArray, _body:PackedByteArray)->void:
 		download_result = result)
 	
 	# Show progress bar
@@ -155,19 +158,23 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 	# Destroy HTTP request
 	http.queue_free()
 	# Return success
-	return OK if download_result == OK else FAILED
+	return download_result as Error
 
-func display(text:String = "") -> void:
+func display(text:String = "")->void:
 	log_label.text = text
 #end
 
-func display_error(text:String) -> void:
+func display_error(text:String)->void:
 	message_label.text = text
 	choice_box.show()
 	
-	var choice:int = -1
-	var retry := func(): choice = 0 #end
-	var quit := func(): choice = 1 #end
+	choice = -1
+	var retry := func()->void:
+		choice = 0
+	#end
+	var quit := func()->void:
+		choice = 1
+	#end
 	retry_button.pressed.connect(retry)
 	quit_button.pressed.connect(quit)
 	
@@ -187,7 +194,7 @@ func display_error(text:String) -> void:
 	#end
 #end
 
-func download_url() -> String:
+func download_url()->String:
 	match OS.get_name().to_lower():
 		"windows": return windows_url
 		"macos": return macos_url
@@ -197,7 +204,7 @@ func download_url() -> String:
 	#end
 #end
 
-func exe_path() -> String:
+func exe_path()->String:
 	match OS.get_name().to_lower():
 		"windows": return windows_exe
 		"macos": return macos_exe
