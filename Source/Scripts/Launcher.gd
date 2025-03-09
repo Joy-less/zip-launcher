@@ -40,10 +40,10 @@ extends Node
 
 var File := preload("res://Scripts/File.gd")
 
-const game_temp_path := "Game.tmp"
-const version_temp_path := "Version.tmp"
-const game_directory := "Game"
-const version_path := "Game/Version"
+const game_temp_path:String = "Game.tmp"
+const version_temp_path:String = "Version.tmp"
+const game_directory:String = "Game"
+const version_path:String = "Game/Version"
 
 func _enter_tree():
 	# Set custom font, icon and thumbnail
