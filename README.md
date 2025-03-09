@@ -33,20 +33,8 @@ It downloads the latest game version if necessary and runs your game.
 
 The file should have the keys:
 - `version`: The version number. Update this every time you update any of your game releases.
-- `windows_url`: The URL of the Windows game zip.
-- `windows_exe`: The path to the executable in the Windows game zip.
-- `linux_url`: The URL of the Linux game zip.
-- `linux_exe`: The path to the executable in the Linux game zip.
-- `macos_url`: The URL of the macOS game zip.
-- `macos_exe`: The path to the executable in the macOS game zip.
-- `android_url`: The URL of the Android game zip.
-- `android_exe`: The path to the executable in the Android game zip.
-- `ios_url`: The URL of the iOS game zip.
-- `ios_exe`: The path to the executable in the iOS game zip.
-- `web_url`: The URL of the Web game zip.
-- `web_exe`: The path to the executable in the Web game zip
-
-Keys for unused platforms may be omitted.
+- `windows_url`, `linux_url`, `macos_url`, `android_url`, `ios_url`, `web_url`: The URL of each platform's game zip.
+- `windows_exe`, `linux_exe`, `macos_exe`, `android_exe`, `ios_exe`, `web_exe`: The path to the executable in each platform's game zip.
 
 Example config file:
 ```json
