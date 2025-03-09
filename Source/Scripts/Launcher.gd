@@ -1,33 +1,14 @@
 extends Node
 
-## The URL of the version string.
-@export var version_url:String
+## The URL of the config JSON file.
+@export var config_url:String
 ## The launcher font.
 @export var font:Font
 ## The launcher window icon.
 @export var icon:Texture2D
 ## The launcher background image.
 @export var thumbnail:Texture2D
-@export_category("Windows")
-## The URL of the Windows game zip.
-@export var windows_url:String
-## The path to the executable in the Windows game zip.
-@export var windows_exe:String = "Game.exe"
-@export_category("macOS")
-## The URL of the macOS game zip.
-@export var macos_url:String
-## The path to the executable in the macOS game zip.
-@export var macos_exe:String = "Game.app"
-@export_category("Linux")
-## The URL of the Linux game zip.
-@export var linux_url:String
-## The path to the executable in the Linux game zip.
-@export var linux_exe:String = "Game.x86_64"
-@export_category("Android")
-## The URL of the Android game zip.
-@export var android_url:String
-## The path to the executable in the Android game zip.
-@export var android_exe:String = "Game.apk"
+
 @export_category("Nodes")
 @export var theme:Theme
 @export var thumbnail_rect:TextureRect
@@ -44,7 +25,7 @@ var choice:int
 var download_result:int
 
 const game_temp_path:String = "Game.tmp"
-const version_temp_path:String = "Version.tmp"
+const config_temp_path:String = "Config.tmp"
 const game_directory:String = "Game"
 const version_path:String = "Game/Version"
 
@@ -57,30 +38,42 @@ func _enter_tree()->void:
 
 func _exit_tree()->void:
 	# Delete temporary files
-	File.delete(version_temp_path)
+	File.delete(config_temp_path)
 	File.delete(game_temp_path)
 #end
 
 func _ready()->void:
-	# Get latest version number
-	display("FETCHING_VERSION")
-	await download(version_url, version_temp_path, false)
-	var latest_version:String = File.read(version_temp_path).strip_edges()
-	File.delete(version_temp_path)
+	# Fetch config
+	display("FETCHING_CONFIG")
+	await download(config_url, config_temp_path, false)
+	var config:Dictionary = JSON.parse_string(File.read(config_temp_path))
+	File.delete(config_temp_path)
 	display()
 	
-	# Ensure latest version number received
-	if latest_version == null:
-		await display_error("FAILED_FETCH_VERSION")
+	# Ensure config received
+	if config == null:
+		await display_error("FAILED_FETCH_CONFIG")
 		return
 	#end
 	
 	# Get current version number
 	var current_version:String = File.read(version_path)
+	# Get latest version number
+	var latest_version:String = config.get("version")
+	if latest_version == null:
+		await display_error("MISSING_VERSION")
+		return
+	#end
 	# Download latest version if outdated
 	if current_version != latest_version:
+		# Get download URL
+		var download_url:String = config.get(str(platform_name(), "_url"))
+		if download_url == null:
+			await display_error("MISSING_DOWNLOAD_URL")
+			return
+		#end
 		# Download latest file
-		var download_success:Error = await download(download_url(), game_temp_path, true)
+		var download_success:Error = await download(download_url, game_temp_path, true)
 		# Ensure latest file downloaded
 		if download_success != OK:
 			await display_error("FAILED_DOWNLOAD")
@@ -98,16 +91,22 @@ func _ready()->void:
 		File.write(version_path, latest_version)
 	#end
 	
+	# Get download exe path
+	var download_exe_path:String = config.get(str(platform_name(), "_exe"))
+	if download_exe_path == null:
+		await display_error("MISSING_DOWNLOAD_EXE")
+		return
+	#end
 	# Run game executable
-	var launch_success:int = OS.create_process(game_directory.path_join(exe_path()), [
+	var launch_success:int = OS.create_process(game_directory.path_join(download_exe_path), [
 		"--",
 		str("--launcher_path=", OS.get_executable_path()),
-		str("--launcher_game_version_url=", version_url),
+		str("--launcher_config_url=", config_url),
 		str("--launcher_game_version=", latest_version),
 	])
 	
 	# Ensure game executable ran successfully
-	if launch_success == -1:
+	if launch_success < 0:
 		await display_error("FAILED_LAUNCH")
 		return
 	#end
@@ -194,22 +193,20 @@ func display_error(text:String)->void:
 	#end
 #end
 
-func download_url()->String:
-	match OS.get_name().to_lower():
-		"windows": return windows_url
-		"macos": return macos_url
-		"linux", "freebsd", "netbsd", "openbsd", "bsd": return linux_url
-		"android": return android_url
-		_: return ""
-	#end
-#end
-
-func exe_path()->String:
-	match OS.get_name().to_lower():
-		"windows": return windows_exe
-		"macos": return macos_exe
-		"linux", "freebsd", "netbsd", "openbsd", "bsd": return linux_exe
-		"android": return android_exe
-		_: return ""
+func platform_name()->String:
+	if OS.has_feature("windows"):
+		return "windows"
+	elif OS.has_feature("macos"):
+		return "macos"
+	elif OS.has_feature("linux"):
+		return "linux"
+	elif OS.has_feature("android"):
+		return "android"
+	elif OS.has_feature("ios"):
+		return "ios"
+	elif OS.has_feature("web"):
+		return "web"
+	else:
+		return ""
 	#end
 #end
