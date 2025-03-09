@@ -50,14 +50,16 @@ const version_path := "Game/Version"
 
 func _enter_tree():
 	# Set custom font, icon and thumbnail
-	if font != null: theme.default_font = font
-	if icon != null: DisplayServer.set_icon(icon.get_image())
-	if thumbnail != null: thumbnail_rect.texture = thumbnail
+	if font != null: theme.default_font = font #end
+	if icon != null: DisplayServer.set_icon(icon.get_image()) #end
+	if thumbnail != null: thumbnail_rect.texture = thumbnail #end
+#end
 
 func _exit_tree():
 	# Delete temporary files
 	File.delete(version_temp_path)
 	File.delete(game_temp_path)
+#end
 
 func _ready():
 	# Get latest version number
@@ -71,6 +73,7 @@ func _ready():
 	if latest_version == null:
 		await display_error("FAILED_FETCH_VERSION")
 		return
+	#end
 	
 	# Get current version number
 	var current_version = File.read(version_path)
@@ -82,6 +85,7 @@ func _ready():
 		if download_success != OK:
 			await display_error("FAILED_DOWNLOAD")
 			return
+		#end
 		# Extract latest file
 		display("EXTRACTING")
 		await get_tree().process_frame
@@ -92,6 +96,7 @@ func _ready():
 		File.delete(game_temp_path)
 		# Store latest version in downloaded directory
 		File.write(version_path, latest_version)
+	#end
 	
 	# Run game executable
 	var launch_success:int = OS.create_process(game_directory.path_join(exe_path()), [
@@ -105,6 +110,7 @@ func _ready():
 	if launch_success == -1:
 		await display_error("FAILED_LAUNCH")
 		return
+	#end
 	
 	# Close launcher
 	get_tree().quit()
@@ -121,6 +127,7 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 	# Ensure request was successful
 	if success != OK:
 		return success
+	#end
 	
 	# Set download result when request completed
 	download_result = -1
@@ -131,6 +138,7 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 	progress_bar.value = 0
 	if show_progress:
 		progress_bar.show()
+	#end
 	# Update progress bar while downloading
 	while download_result < 0:
 		# Get download progress
@@ -139,8 +147,10 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 		# Display download progress
 		if total_bytes >= 0:
 			progress_bar.value = lerp(progress_bar.value, float(current_bytes) / total_bytes, 0.1)
+		#end
 		# Wait for next frame
 		await get_tree().process_frame
+	#end
 	# Hide progress bar
 	progress_bar.value = 1
 	progress_bar.hide()
@@ -152,6 +162,7 @@ func download(link:String, path:String, show_progress:bool) -> Error:
 
 func display(text:String = "") -> void:
 	log_label.text = text
+#end
 
 func display_error(text:String) -> void:
 	message_label.text = text
@@ -165,6 +176,7 @@ func display_error(text:String) -> void:
 	
 	while choice < 0:
 		await get_tree().process_frame
+	#end
 	
 	retry_button.pressed.disconnect(retry)
 	quit_button.pressed.disconnect(quit)
@@ -175,6 +187,8 @@ func display_error(text:String) -> void:
 	match choice:
 		0: get_tree().reload_current_scene()
 		1: get_tree().quit()
+	#end
+#end
 
 func download_url() -> String:
 	match OS.get_name().to_lower():
@@ -183,6 +197,8 @@ func download_url() -> String:
 		"linux", "freebsd", "netbsd", "openbsd", "bsd": return linux_url
 		"android": return android_url
 		_: return ""
+	#end
+#end
 
 func exe_path() -> String:
 	match OS.get_name().to_lower():
@@ -191,3 +207,5 @@ func exe_path() -> String:
 		"linux", "freebsd", "netbsd", "openbsd", "bsd": return linux_exe
 		"android": return android_exe
 		_: return ""
+	#end
+#end
