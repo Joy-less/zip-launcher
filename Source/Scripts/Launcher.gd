@@ -24,10 +24,10 @@ var File := preload("res://Scripts/File.gd")
 var choice:int
 var download_result:int
 
-const game_temp_path:String = "Game.tmp"
-const config_temp_path:String = "Config.tmp"
-const game_directory:String = "Game"
-const version_path:String = "Game/Version"
+const game_temp_path:String = "Game.temp"
+const config_temp_path:String = "Config.temp"
+const game_path:String = "Game"
+const config_path:String = "Game/LauncherConfig.json"
 
 func _enter_tree()->void:
 	# Set custom font, icon and thumbnail
@@ -46,28 +46,40 @@ func _ready()->void:
 	# Fetch config
 	display("FETCHING_CONFIG")
 	await download(config_url, config_temp_path, false)
-	var config:Dictionary = JSON.parse_string(File.read(config_temp_path))
+	var latest_config:Variant = File.read_json(config_temp_path)
 	File.delete(config_temp_path)
 	display()
 	
 	# Ensure config received
-	if config == null:
+	if latest_config == null:
 		await display_error("FAILED_FETCH_CONFIG")
 		return
 	#end
 	
+	# Get current config
+	var current_config:Variant = File.read_json(config_path)
+	
 	# Get current version number
-	var current_version:String = File.read(version_path)
+	var current_version:String = ""
+	if current_config != null:
+		current_version = current_config.get("version")
+		if current_version == null:
+			await display_error("MISSING_VERSION")
+			return
+		#end
+	#end
+	
 	# Get latest version number
-	var latest_version:String = config.get("version")
+	var latest_version:String = latest_config.get("version")
 	if latest_version == null:
 		await display_error("MISSING_VERSION")
 		return
 	#end
+	
 	# Download latest version if outdated
 	if current_version != latest_version:
 		# Get download URL
-		var download_url:String = config.get(str(platform_name(), "_url"))
+		var download_url:String = latest_config.get(str(platform_name(), "_url"))
 		if download_url == null:
 			await display_error("MISSING_DOWNLOAD_URL")
 			return
@@ -81,23 +93,23 @@ func _ready()->void:
 		# Extract latest file
 		display("EXTRACTING")
 		await get_tree().process_frame
-		File.extract(game_temp_path, game_directory)
+		File.extract(game_temp_path, game_path)
 		display()
 		await get_tree().process_frame
 		# Delete temporary file
 		File.delete(game_temp_path)
-		# Store latest version in downloaded directory
-		File.write(version_path, latest_version)
+		# Store latest config in downloaded directory
+		File.write_json(config_path, latest_config, "\t")
 	#end
 	
 	# Get download exe path
-	var download_exe_path:String = config.get(str(platform_name(), "_exe"))
+	var download_exe_path:String = latest_config.get(str(platform_name(), "_exe"))
 	if download_exe_path == null:
 		await display_error("MISSING_DOWNLOAD_EXE")
 		return
 	#end
 	# Run game executable
-	var launch_success:int = OS.create_process(game_directory.path_join(download_exe_path), [
+	var launch_success:int = OS.create_process(game_path.path_join(download_exe_path), [
 		"--",
 		str("--launcher_path=", OS.get_executable_path()),
 		str("--launcher_config_url=", config_url),

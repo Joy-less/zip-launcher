@@ -1,17 +1,25 @@
 extends Object
 
 static func read(path:String)->String:
-	var file := FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		return ""
+	return FileAccess.get_file_as_string(path)
+#end
+
+static func read_json(path:String)->Variant:
+	var text:String = read(path)
+	if text.is_empty():
+		return null
 	#end
-	return file.get_as_text()
+	return JSON.parse_string(text)
 #end
 
 static func write(path:String, data:String)->void:
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
+#end
+
+static func write_json(path:String, data:Variant, indent:String = "")->void:
+	write(path, JSON.stringify(data, indent))
 #end
 
 static func delete(path:String)->void:
