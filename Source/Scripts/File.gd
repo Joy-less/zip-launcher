@@ -5,7 +5,11 @@ static func read(path:String)->String:
 
 ## Reads the file as a UTF-8 string and parses a JSON element.
 static func read_json(path:String)->Variant:
-	return JSON.parse_string(read(path))
+	var text:String = read(path)
+	if text.is_empty():
+		return null
+	#end
+	return JSON.parse_string(text)
 #end
 
 ## Writes the UTF-8 string to the file.
