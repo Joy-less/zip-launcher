@@ -122,6 +122,7 @@ func _ready()->void:
 	
 	# Close launcher
 	get_tree().quit()
+#end
 
 func download(link:String, path:String, show_progress:bool)->Error:
 	# Create HTTP request
@@ -167,6 +168,7 @@ func download(link:String, path:String, show_progress:bool)->Error:
 	http.queue_free()
 	# Return success
 	return download_result as Error
+#end
 
 func display(text:String = "")->void:
 	log_label.text = text
