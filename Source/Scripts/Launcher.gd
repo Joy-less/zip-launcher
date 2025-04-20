@@ -120,6 +120,7 @@ func _ready()->void:
 	get_tree().quit()
 #end
 
+## Downloads the file to memory and returns it as a byte array, or an empty array if failed.
 func download_to_byte_array(link:String)->PackedByteArray:
 	# Create HTTP request
 	var http := HTTPRequest.new()
@@ -151,6 +152,7 @@ func download_to_byte_array(link:String)->PackedByteArray:
 	return body
 #end
 
+## Downloads the file to memory and returns it as a JSON element, or null if failed.
 func download_to_json_variant(link:String)->Variant:
 	var downloaded_bytes:PackedByteArray = await download_to_byte_array(link)
 	if downloaded_bytes.is_empty():
@@ -160,6 +162,7 @@ func download_to_json_variant(link:String)->Variant:
 	return JSON.parse_string(downloaded_string)
 #end
 
+## Downloads the file to a file.
 func download_to_file(link:String, path:String, show_progress:bool)->Error:
 	# Create HTTP request
 	var http := HTTPRequest.new()
@@ -206,10 +209,12 @@ func download_to_file(link:String, path:String, show_progress:bool)->Error:
 	return download_result as Error
 #end
 
+## Sets the display label to the text.
 func display(text:String = "")->void:
 	log_label.text = text
 #end
 
+## Prompts an error popup with the text.
 func display_error(text:String)->void:
 	message_label.text = text
 	choice_box.show()
@@ -240,6 +245,7 @@ func display_error(text:String)->void:
 	#end
 #end
 
+## Returns the current export platform according to export features.
 func platform_name()->String:
 	if OS.has_feature("windows"):
 		return "windows"

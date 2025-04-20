@@ -1,25 +1,31 @@
+## Reads the file as a UTF-8 string.
 static func read(path:String)->String:
 	return FileAccess.get_file_as_string(path)
 #end
 
+## Reads the file as a UTF-8 string and parses a JSON element.
 static func read_json(path:String)->Variant:
 	return JSON.parse_string(read(path))
 #end
 
+## Writes the UTF-8 string to the file.
 static func write(path:String, data:String)->void:
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
 #end
 
+## Serializes the JSON element as a UTF-8 string and writes it to the file.
 static func write_json(path:String, data:Variant, indent:String = "")->void:
 	write(path, JSON.stringify(data, indent))
 #end
 
+## Deletes the file.
 static func delete(path:String)->void:
 	DirAccess.open(".").remove(path)
 #end
 
+## Extracts the ZIP file to the directory.
 static func extract(path:String, directory:String)->void:
 	# Open zip file
 	var zip_reader := ZIPReader.new()
