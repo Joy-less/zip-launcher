@@ -25,7 +25,6 @@ var choice:int
 var download_result:int
 
 const game_temp_path:String = "Game.temp"
-const config_temp_path:String = "Config.temp"
 const game_path:String = "Game"
 const config_path:String = "Game/LauncherConfig.json"
 
@@ -38,16 +37,13 @@ func _enter_tree()->void:
 
 func _exit_tree()->void:
 	# Delete temporary files
-	File.delete(config_temp_path)
 	File.delete(game_temp_path)
 #end
 
 func _ready()->void:
 	# Fetch config
 	display("FETCHING_CONFIG")
-	await download(config_url, config_temp_path, false)
-	var latest_config:Variant = File.read_json(config_temp_path)
-	File.delete(config_temp_path)
+	var latest_config:Variant = await download_to_json_variant(config_url)
 	display()
 	
 	# Ensure config received
@@ -85,7 +81,7 @@ func _ready()->void:
 			return
 		#end
 		# Download latest file
-		var download_success:Error = await download(download_url, game_temp_path, true)
+		var download_success:Error = await download_to_file(download_url, game_temp_path, true)
 		if download_success != OK:
 			await display_error("FAILED_DOWNLOAD")
 			return
@@ -124,7 +120,47 @@ func _ready()->void:
 	get_tree().quit()
 #end
 
-func download(link:String, path:String, show_progress:bool)->Error:
+func download_to_byte_array(link:String)->PackedByteArray:
+	# Create HTTP request
+	var http := HTTPRequest.new()
+	http.use_threads = true
+	add_child(http)
+	
+	# Request file
+	var success:Error = http.request(link)
+	# Ensure request was successful
+	if success != OK:
+		return []
+	#end
+	
+	# Await response
+	var response:Array = await http.request_completed
+	download_result = response[0]
+	
+	# Ensure response was successful
+	if download_result != OK:
+		return []
+	#end
+	
+	# Get response body
+	var body:PackedByteArray = response[3]
+	
+	# Destroy HTTP request
+	http.queue_free()
+	# Return body
+	return body
+#end
+
+func download_to_json_variant(link:String)->Variant:
+	var downloaded_bytes:PackedByteArray = await download_to_byte_array(link)
+	if downloaded_bytes.is_empty():
+		return null
+	#end
+	var downloaded_string:String = downloaded_bytes.get_string_from_utf8()
+	return JSON.parse_string(downloaded_string)
+#end
+
+func download_to_file(link:String, path:String, show_progress:bool)->Error:
 	# Create HTTP request
 	var http := HTTPRequest.new()
 	http.download_file = path

@@ -1,15 +1,9 @@
-extends Object
-
 static func read(path:String)->String:
 	return FileAccess.get_file_as_string(path)
 #end
 
 static func read_json(path:String)->Variant:
-	var text:String = read(path)
-	if text.is_empty():
-		return null
-	#end
-	return JSON.parse_string(text)
+	return JSON.parse_string(read(path))
 #end
 
 static func write(path:String, data:String)->void:
