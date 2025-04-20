@@ -144,7 +144,7 @@ func download(link:String, path:String, show_progress:bool)->Error:
 		download_result = result)
 	
 	# Show progress bar
-	progress_bar.value = 0
+	progress_bar.value = 0.0
 	if show_progress:
 		progress_bar.show()
 	#end
@@ -161,7 +161,7 @@ func download(link:String, path:String, show_progress:bool)->Error:
 		await get_tree().process_frame
 	#end
 	# Hide progress bar
-	progress_bar.value = 1
+	progress_bar.value = 1.0
 	progress_bar.hide()
 	
 	# Destroy HTTP request
